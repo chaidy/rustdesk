@@ -340,6 +340,9 @@ showCmWindow({bool isStartup = false}) async {
   if (isStartup) {
     _isCmReadyToShow = true;
   }
+  else {
+      windowOnTop(null);
+  }
 }
 
 hideCmWindow({bool isStartup = false}) async {
