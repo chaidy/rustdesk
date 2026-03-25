@@ -338,17 +338,7 @@ showCmWindow({bool isStartup = false}) async {
 
 showCmWindow({bool isStartup = false}) async {
   if (isStartup) {
-    WindowOptions windowOptions = getHiddenTitleBarWindowOptions(
-        size: kConnectionManagerWindowSizeClosedChat, alwaysOnTop: false);
-    await windowManager.waitUntilReadyToShow(windowOptions, null);
-    bind.mainHideDock();
-    await Future.wait([
-      windowManager.show(),
-      windowManager.setOpacity(1),
-      windowManager.minimize()
-    ]);
     _isCmReadyToShow = true;
-  } else if (_isCmReadyToShow) {
   }
 }
 
