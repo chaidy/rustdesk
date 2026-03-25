@@ -307,6 +307,7 @@ void runConnectionManagerScreen() async {
 
 bool _isCmReadyToShow = false;
 
+/*
 showCmWindow({bool isStartup = false}) async {
   if (isStartup) {
     WindowOptions windowOptions = getHiddenTitleBarWindowOptions(
@@ -331,6 +332,59 @@ showCmWindow({bool isStartup = false}) async {
           kConnectionManagerWindowSizeClosedChat, Alignment.topRight);
       windowOnTop(null);
     }
+  }
+}
+*/
+
+showCmWindow({bool isStartup = false}) async {
+  if (isStartup) {
+    // 1. 초기 윈도우 옵션 설정 (제목 표시줄 숨김 등)
+    WindowOptions windowOptions = getHiddenTitleBarWindowOptions(
+        size: kConnectionManagerWindowSizeClosedChat, 
+        alwaysOnTop: true);
+    
+    // 창이 준비될 때까지 대기하지만, 아직 화면에 노출하지는 않음
+    await windowManager.waitUntilReadyToShow(windowOptions, null);
+    bind.mainHideDock();
+
+    // --- [기존 로직 주석 처리] ---
+    /*
+    await Future.wait([
+      windowManager.show(),
+      windowManager.focus(),
+      windowManager.setOpacity(1)
+    ]);
+    */
+
+    // --- [신규 로직: 포커스 없이 최소화/숨김 상태 유지] ---
+    await Future.wait([
+      windowManager.setOpacity(0), // 투명도를 0으로 하여 잔상 방지
+      windowManager.minimize(),   // 생성 즉시 최소화 (작업 표시줄로)
+      // windowManager.hide(),     // 만약 아예 안 보여야 한다면 hide() 사용 고려
+    ]);
+
+    // 초기 창 위치만 우측 상단으로 조용히 설정
+    await windowManager.setSizeAlignment(
+        kConnectionManagerWindowSizeClosedChat, Alignment.topRight);
+    
+    _isCmReadyToShow = true;
+  } else if (_isCmReadyToShow) {
+    // --- [기존 로직: 투명도 1로 만들고 포커스 가져오는 부분 주석 처리] ---
+    /*
+    if (await windowManager.getOpacity() != 1) {
+      await windowManager.setOpacity(1);
+      await windowManager.focus();
+      await windowManager.minimize(); //needed
+      await windowManager.setSizeAlignment(
+          kConnectionManagerWindowSizeClosedChat, Alignment.topRight);
+      windowOnTop(null);
+    }
+    */
+
+    // --- [신규 로직: 포커스 변화 없이 위치값만 내부 갱신] ---
+    // 백그라운드 윈도우의 포커스를 유지하기 위해 오직 정렬 명령만 수행합니다.
+    await windowManager.setSizeAlignment(
+        kConnectionManagerWindowSizeClosedChat, Alignment.topRight);
   }
 }
 
