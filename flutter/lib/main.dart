@@ -344,12 +344,11 @@ showCmWindow({bool isStartup = false}) async {
     bind.mainHideDock();
     await Future.wait([
       windowManager.show(),
-      windowManager.setOpacity(1)
-      windowManager.minimize(); //needed
+      windowManager.setOpacity(1),
+      windowManager.minimize()
     ]);
     _isCmReadyToShow = true;
   } else if (_isCmReadyToShow) {
-      
   }
 }
 
