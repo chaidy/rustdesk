@@ -345,16 +345,10 @@ showCmWindow({bool isStartup = false}) async {
     await Future.wait([
       windowManager.show(),
       windowManager.setOpacity(1)
+      windowManager.minimize(); //needed
     ]);
     _isCmReadyToShow = true;
   } else if (_isCmReadyToShow) {
-    if (await windowManager.getOpacity() != 1) {
-      await windowManager.setOpacity(1);
-      await windowManager.minimize(); //needed
-      await windowManager.setSizeAlignment(
-          kConnectionManagerWindowSizeClosedChat, Alignment.topRight);
-      windowOnTop(null);
-    }
   }
 }
 
