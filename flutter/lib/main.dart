@@ -307,6 +307,7 @@ void runConnectionManagerScreen() async {
 
 bool _isCmReadyToShow = false;
 
+/*
 showCmWindow({bool isStartup = false}) async {
   if (isStartup) {
     WindowOptions windowOptions = getHiddenTitleBarWindowOptions(
@@ -331,6 +332,23 @@ showCmWindow({bool isStartup = false}) async {
           kConnectionManagerWindowSizeClosedChat, Alignment.topRight);
       windowOnTop(null);
     }
+  }
+}
+*/
+
+showCmWindow({bool isStartup = false}) async {
+  if (isStartup) {
+    WindowOptions windowOptions = getHiddenTitleBarWindowOptions(
+        size: kConnectionManagerWindowSizeClosedChat, alwaysOnTop: true);
+    await windowManager.waitUntilReadyToShow(windowOptions, null);
+    bind.mainHideDock();
+    await Future.wait([
+      windowManager.show(),
+      windowManager.setOpacity(1),
+      windowManager.minimize()
+    ]);
+    _isCmReadyToShow = true;
+  } else if (_isCmReadyToShow) {
   }
 }
 
