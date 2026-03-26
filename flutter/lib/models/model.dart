@@ -4162,7 +4162,6 @@ Future<Map<String, dynamic>?> getCanvasConfig(SessionID sessionId) async {
   }
 }
 
-/* (org code)
 Future<void> initializeCursorAndCanvas(FFI ffi) async {
   var p = await getCanvasConfig(ffi.sessionId);
   int currentDisplay = 0;
@@ -4181,31 +4180,6 @@ Future<void> initializeCursorAndCanvas(FFI ffi) async {
   double scale = p['scale'];
   ffi.cursorModel.updateDisplayOriginWithCursor(ffi.ffiModel.rect?.left ?? 0,
       ffi.ffiModel.rect?.top ?? 0, xCursor, yCursor);
-  ffi.canvasModel.update(xCanvas, yCanvas, scale);
-}
-*/
-
-Future<void> initializeCursorAndCanvas(FFI ffi) async {
-  var p = await getCanvasConfig(ffi.sessionId);
-  int currentDisplay = 0;
-  if (p != null) {
-    currentDisplay = p['currentDisplay'];
-  }
-  if (p == null || currentDisplay != ffi.ffiModel.pi.currentDisplay) {
-    ffi.cursorModel.updateDisplayOrigin(
-        ffi.ffiModel.rect?.left ?? 0, ffi.ffiModel.rect?.top ?? 0,
-        updateCursorPos: ffi.ffiModel.rect != null);  // ← 수정
-    return;
-  }
-  double xCursor = p['xCursor'];
-  double yCursor = p['yCursor'];
-  double xCanvas = p['xCanvas'];
-  double yCanvas = p['yCanvas'];
-  double scale = p['scale'];
-  if (ffi.ffiModel.rect != null) {  // ← 조건 추가
-    ffi.cursorModel.updateDisplayOriginWithCursor(ffi.ffiModel.rect!.left,
-        ffi.ffiModel.rect!.top, xCursor, yCursor);
-  }
   ffi.canvasModel.update(xCanvas, yCanvas, scale);
 }
 
