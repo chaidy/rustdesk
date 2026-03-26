@@ -339,24 +339,23 @@ showCmWindow({bool isStartup = false}) async {
 showCmWindow({bool isStartup = false}) async {
   if (isStartup) {
     WindowOptions windowOptions = getHiddenTitleBarWindowOptions(
-        size: kConnectionManagerWindowSizeClosedChat, 
-        alwaysOnTop: false);
-    
+        size: kConnectionManagerWindowSizeClosedChat, alwaysOnTop: false);
     await windowManager.waitUntilReadyToShow(windowOptions, null);
     bind.mainHideDock();
-
     await Future.wait([
-      windowManager.setOpacity(0),
-      windowManager.minimize(),
-      windowManager.hide()
+      windowManager.show(),
+      windowManager.setOpacity(1)
     ]);
     await windowManager.setSizeAlignment(
         kConnectionManagerWindowSizeClosedChat, Alignment.topRight);
     _isCmReadyToShow = true;
-  }
-  else if (_isCmReadyToShow) {
-    await windowManager.setSizeAlignment(
-        kConnectionManagerWindowSizeClosedChat, Alignment.topRight);
+  } else if (_isCmReadyToShow) {
+    if (await windowManager.getOpacity() != 1) {
+      await windowManager.setOpacity(1);
+      await windowManager.minimize();
+      await windowManager.setSizeAlignment(
+          kConnectionManagerWindowSizeClosedChat, Alignment.topRight);
+    }
   }
 }
 
