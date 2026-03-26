@@ -996,12 +996,25 @@ class InputModel {
     }
   }
 
+  /* (org code)
   /// Send mouse movement event with distance in [x] and [y].
   Future<void> moveMouse(double x, double y) async {
     if (!keyboardPerm) return;
     if (isViewCamera) return;
     var x2 = x.toInt();
     var y2 = y.toInt();
+    await bind.sessionSendMouse(
+        sessionId: sessionId,
+        msg: json.encode(modify({'x': '$x2', 'y': '$y2'})));
+  }
+  */
+
+  Future<void> moveMouse(double x, double y) async {
+    if (!keyboardPerm) return;
+    if (isViewCamera) return;
+    var x2 = x.toInt();
+    var y2 = y.toInt();
+    if (x2 == 0 && y2 == 0) return;  // ← 여기
     await bind.sessionSendMouse(
         sessionId: sessionId,
         msg: json.encode(modify({'x': '$x2', 'y': '$y2'})));
