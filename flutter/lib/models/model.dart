@@ -4169,8 +4169,8 @@ Future<void> initializeCursorAndCanvas(FFI ffi) async {
     currentDisplay = p['currentDisplay'];
   }
   if (p == null || currentDisplay != ffi.ffiModel.pi.currentDisplay) {
-    ffi.cursorModel.updateDisplayOrigin(
-        ffi.ffiModel.rect?.left ?? 0, ffi.ffiModel.rect?.top ?? 0);
+    //(org code) ffi.cursorModel.updateDisplayOrigin(ffi.ffiModel.rect?.left ?? 0, ffi.ffiModel.rect?.top ?? 0);
+    ffi.cursorModel.updateDisplayOrigin(ffi.ffiModel.rect?.left ?? 0, ffi.ffiModel.rect?.top ?? 0, updateCursorPos: ffi.ffiModel.rect != null);
     return;
   }
   double xCursor = p['xCursor'];
