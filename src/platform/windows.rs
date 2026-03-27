@@ -125,7 +125,25 @@ pub fn get_cursor_pos() -> Option<(i32, i32)> {
     }
 }
 
+/* (org code)
 pub fn set_cursor_pos(x: i32, y: i32) -> bool {
+    unsafe {
+        if SetCursorPos(x, y) == FALSE {
+            let err = GetLastError();
+            log::warn!("SetCursorPos failed: x={}, y={}, error_code={}", x, y, err);
+            return false;
+        }
+        true
+    }
+}
+*/
+
+pub fn set_cursor_pos(x: i32, y: i32) -> bool {
+    // 추가: x와 y가 모두 0 이하(또는 0)일 경우 이동을 무시하고 성공으로 간주함
+    if x <= 0 && y <= 0 {
+        return true; 
+    }
+
     unsafe {
         if SetCursorPos(x, y) == FALSE {
             let err = GetLastError();
