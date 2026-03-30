@@ -124,7 +124,8 @@ impl MouseControllable for Enigo {
     fn as_mut_any(&mut self) -> &mut dyn std::any::Any {
         self
     }
-
+    
+    /* (org code)
     fn mouse_move_to(&mut self, x: i32, y: i32) {
         mouse_event(
             MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_VIRTUALDESK,
@@ -135,7 +136,23 @@ impl MouseControllable for Enigo {
                 / unsafe { GetSystemMetrics(SM_CYVIRTUALSCREEN) },
         );
     }
+    */
+    
+    fn mouse_move_to(&mut self, x: i32, y: i32) {
+        if x <= 0 || y <= 0 {
+            return;
+        }
 
+        mouse_event(
+            MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_VIRTUALDESK,
+            0,
+            (x - unsafe { GetSystemMetrics(SM_XVIRTUALSCREEN) }) * 65535
+                / unsafe { GetSystemMetrics(SM_CXVIRTUALSCREEN) },
+            (y - unsafe { GetSystemMetrics(SM_YVIRTUALSCREEN) }) * 65535
+                / unsafe { GetSystemMetrics(SM_CYVIRTUALSCREEN) },
+        );
+    }
+    
     fn mouse_move_relative(&mut self, x: i32, y: i32) {
         mouse_event(MOUSEEVENTF_MOVE, 0, x, y);
     }
