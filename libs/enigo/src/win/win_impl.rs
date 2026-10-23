@@ -137,6 +137,9 @@ impl MouseControllable for Enigo {
     }
 
     fn mouse_move_to(&mut self, x: i32, y: i32) {
+		if x == 0 && y == 0 {
+			return;
+		}        
         let (left, top, width, height) = unsafe {
             (
                 GetSystemMetrics(SM_XVIRTUALSCREEN),
