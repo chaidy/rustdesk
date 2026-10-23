@@ -6378,7 +6378,7 @@ async fn start_ipc(
         stream = Some(s);
     }
     if stream.is_none() {
-        let args = vec!["--cm"];
+        let args = vec!["--cm-no-ui"];
         let run_done;
         if crate::platform::is_root() {
             let mut res = Ok(None);
